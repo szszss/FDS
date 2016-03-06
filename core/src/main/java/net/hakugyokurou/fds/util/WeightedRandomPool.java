@@ -12,16 +12,7 @@ import java.util.TreeMap;
  */
 public class WeightedRandomPool<E> {
 	private final NavigableMap<Float, E> map = new TreeMap<Float, E>();
-    private final Random random;
     private float total = 0;
-
-    public WeightedRandomPool() {
-        this(new Random());
-    }
-
-    public WeightedRandomPool(Random random) {
-        this.random = random;
-    }
 
     public void add(float weight, E result) {
         if (weight <= 0) return;
@@ -29,8 +20,13 @@ public class WeightedRandomPool<E> {
         map.put(total, result);
     }
 
-    public E next() {
+    public E next(Random random) {
         float value = random.nextFloat() * total;
         return map.ceilingEntry(value).getValue();
+    }
+    
+    public void clear() {
+    	map.clear();
+    	total = 0f;
     }
 }

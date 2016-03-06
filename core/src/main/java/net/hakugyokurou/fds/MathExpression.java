@@ -7,6 +7,14 @@ public class MathExpression {
 
 	private IEvaluable root;
 	
+	public MathExpression() {
+		this(null);
+	}
+	
+	public MathExpression(IEvaluable root) {
+		this.root = root;
+	}
+	
 	public void setRoot(IEvaluable root) {
 		this.root = root;
 	}

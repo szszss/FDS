@@ -1,15 +1,13 @@
 package net.hakugyokurou.fds.generator;
 
-import java.util.Random;
-
-import net.hakugyokurou.fds.MathExpression;
-
 public class EasyExpressionProvider extends BasicExpressionProvider{
 	
-	private static final int NUMBERS_MIN = 3;
-	private static final int NUMBERS_MAX = 6;
+	public static final EasyExpressionProvider INSTANCE = new EasyExpressionProvider();
 	
 	public EasyExpressionProvider() {
-		super(NUMBERS_MIN, NUMBERS_MAX);
+		setNumbers(3, 6);
+		setDifficulty(0.1f);
+		setOperationWeights(0.5f, 0.25f, 0.125f, 0.0625f);
+		setValueWeights(0.8f, 0.1f, 0.1f);
 	}
 }

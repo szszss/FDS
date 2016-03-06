@@ -1,7 +1,5 @@
 package net.hakugyokurou.fds.node;
 
-import java.util.Formatter;
-
 public class RationalNode implements IEvaluable {
 	
 	private final double value;
@@ -33,16 +31,16 @@ public class RationalNode implements IEvaluable {
 		`寸圭ﾐ/　　 /　　／∥　　　 `≪ミ{　　  乂l／ ｝＿　 　 　 　 How could it fail?
 		　　  /　　 /　　/　 ＿　　　 / 　＼　　    ノ＿/::::ヽ　　　　
 		　　/　/  / 　/　 7⌒Y\_　  /　-＝-ミ寸至圭{　ヽ:::}　　　／
-		　   ! / l∥ 　 l　 /l l　\ |   / { /　｜`寸ﾐ犾　　 ￣　 ／
+		　   ! / l∥ 　 l　 /l l　\ |   / { /　｜`寸ﾐ犾　　 ￣  ／
 		    ｛ /  l { 　{　{ ,x云从  |　 l　/r‐{- 　 l　}　ﾄ圭会x　 　 /会x_
-		　   乂　 l 从 　 气     (ん心 \　l/ 芹云ﾐx,,l/j  /　`≪圭会z价圭会x
-		　　　　　い　＼ 人 ｛::♡:｝＼{　  ん:♡ﾊY/　　 /ヽ l`≪圭圭圭圭
-		　　 　 　 ヽlヽ　ﾄ　   乂ン　　} 　  弋:::ﾉﾉj　  /　 ﾊ}　ﾊ`トミ圭圭
+		　   乂　 l 从 　 气     (ん心 \　l/ 芹云ﾐx,,l/j   /　`≪圭会z价圭会x
+		　　　　　い　＼ 人 ｛::♡:｝＼{　  ん:♡ﾊY/　　  /ヽ l`≪圭圭圭圭
+		　　 　 　 ヽlヽ　ﾄ　   乂ン　　} 　  弋:::ﾉﾉj　   /　 ﾊ}　ﾊ`トミ圭圭
 		　　　　　 　 　)ﾉ八　,,,,　 '  　　　 　 ｀~~  /　/　 / ﾉ / ﾉ　＼￣￣
 		　　　　　　　　/　 l、　　    　　　　　'''　/ ／　 ノ　／　 　 ヽ Y　　
 		　　　　　　 　 {　　l ＼　　`ｰ-‐'"’　　 ／｝／　{ {　　乂　　l l　　
-		　　　　 　 　  「ヽ　 い {＼　　 　 　 　 / //    ＿ j人ヽ　　＼ } }＼
-		　　      r‐ ､　   l }＼乂　 l l ｰ---ｬ''"/ /　    ／／:j　 Y ＼　ﾉ  人　
+		　　　　 　 　  「ヽ　 い {＼　　 　 　 　  / //    ＿ j人ヽ　　＼ } }＼
+		　　      r‐ ､　   l }＼乂　 l l ｰ---ｬ''" / /　    ／／:j　 Y ＼　ﾉ  人　
 		　　　    ＼ ＼　｜ l　 )人　l从 ＞- ｝  / /   ／／:::/　　} }～---､＼
 		　　　　    ＼ ＼ l l　　 八 l:::f‐く  ﾐ/ ｛  　／::::/ 　 ノノ＿／ ﾉヽ
 		　　　　　　ヽ＿＿＞く 〔`ﾄ/⌒           ＼　　　 /::::::/　／ ﾉ ／ ⌒＼⌒)

@@ -13,6 +13,17 @@ public class OperationNode implements IEvaluable {
 			protected String toString(String l, String r) {
 				return l + "+ " + r;
 			}
+
+			@Override
+			public int comparePriority(Operation other) {
+				switch (other) {
+				case MUL:
+				case DIV:	
+					return -1;
+				default:
+					return 0;
+				}
+			}
 		},
 		SUB {
 			@Override
@@ -23,6 +34,17 @@ public class OperationNode implements IEvaluable {
 			@Override
 			protected String toString(String l, String r) {
 				return l + "- " + r;
+			}
+
+			@Override
+			public int comparePriority(Operation other) {
+				switch (other) {
+				case MUL:
+				case DIV:	
+					return -1;
+				default:
+					return 0;
+				}
 			}
 		},
 		MUL {
@@ -35,6 +57,17 @@ public class OperationNode implements IEvaluable {
 			protected String toString(String l, String r) {
 				return l + "* " + r;
 			}
+
+			@Override
+			public int comparePriority(Operation other) {
+				switch (other) {
+				case ADD:
+				case SUB:	
+					return 1;
+				default:
+					return 0;
+				}
+			}
 		},
 		DIV {
 			@Override
@@ -46,10 +79,22 @@ public class OperationNode implements IEvaluable {
 			protected String toString(String l, String r) {
 				return l + "/ " + r;
 			}
+
+			@Override
+			public int comparePriority(Operation other) {
+				switch (other) {
+				case ADD:
+				case SUB:	
+					return 1;
+				default:
+					return 0;
+				}
+			}
 		};
 		
 		protected abstract double eval(double l, double r);
 		protected abstract String toString(String l, String r);
+		public abstract int comparePriority(Operation other);
 	}
 	
 	private final Operation operation;
@@ -57,6 +102,10 @@ public class OperationNode implements IEvaluable {
 	
 	public OperationNode(Operation operation) {
 		this.operation = operation;
+	}
+	
+	public Operation getOperation() {
+		return operation;
 	}
 	
 	public void setLeft(IEvaluable left) {
