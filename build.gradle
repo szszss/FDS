@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url "http://maven.oschina.net/content/groups/public/" }
+        jcenter()
     }
     dependencies {
 		classpath 'ca.coglinc:javacc-gradle-plugin:2.3.1'

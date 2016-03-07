@@ -1,5 +1,7 @@
 # FDS - Finite Digit Summator
 
+[![Build Status](https://travis-ci.org/szszss/FDS.svg?branch=master)](https://travis-ci.org/szszss/FDS)
+
 **CAUTION: WIP**
 
 **Finite Digit Summator** (**FDS** for short) is a "boring" project which could either parse or generator lots of math expressions and evaluate 'em all.
