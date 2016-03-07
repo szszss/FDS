@@ -3,7 +3,8 @@ buildscript {
         maven { url "http://maven.oschina.net/content/groups/public/" }
     }
     dependencies {
-		classpath group: 'ca.coglinc', name: 'javacc-gradle-plugin', version: '2.3.1'
+		classpath 'ca.coglinc:javacc-gradle-plugin:2.3.1'
+		classpath 'com.android.tools.build:gradle:1.5.0'
     }
 }
 
@@ -63,6 +64,24 @@ project(":desktop") {
 	dependencies {
 		compile project(":core")
 		testCompile "junit:junit:4.8.2"
+	}
+}
+
+project(":web") {
+    apply plugin: "java"
+	
+	dependencies {
+		compile project(":core")
+		compile "com.jfinal:jfinal:2.2"
+		testCompile "junit:junit:4.8.2"
+	}
+}
+
+project(":android") {
+    apply plugin: "android"
+	
+	dependencies {
+		compile project(":core")
 	}
 }
 

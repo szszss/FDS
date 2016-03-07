@@ -15,7 +15,8 @@ public class RationalNode implements IEvaluable {
 
 	@Override
 	public String toString() {
-		return value + " ";
+		long lv = (long)value;
+		return value == lv ? String.format("%d ", lv) : String.format("%.3f ", value);
 	}
 
 	@Override

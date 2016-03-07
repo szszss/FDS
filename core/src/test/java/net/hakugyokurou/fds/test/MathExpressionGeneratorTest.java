@@ -12,7 +12,10 @@ public class MathExpressionGeneratorTest {
 
 	@Test
 	public void testGenerateEasy() {
-		MathExpression expr = MathExpressionGenerator.generateEasy();
-		out.println(expr + "= " + expr.eval());
+		for(int i = 0; i < 100; i++)
+		{
+			MathExpression expr = MathExpressionGenerator.generateLunatic();
+			out.println(expr + "= " + expr.eval());
+		}
 	}
 }

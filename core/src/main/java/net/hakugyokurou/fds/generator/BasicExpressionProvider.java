@@ -15,7 +15,7 @@ import net.hakugyokurou.fds.util.WeightedRandomPool;
 
 public abstract class BasicExpressionProvider implements IGeneratorProvider {
 	
-	protected static enum Value {
+	protected enum Value {
 		INTEGER {
 			@Override
 			public IEvaluable create(Random random, BasicExpressionProvider context) {
@@ -31,21 +31,25 @@ public abstract class BasicExpressionProvider implements IGeneratorProvider {
 				final int MAX = 10000;
 				int l = random.nextInt(MAX);
 				double f = l * random.nextDouble() * context.difficulty3;
-				f = Math.round(f * 1000) * 0.001;
-				return new RationalNode(f);
+				//f = Math.round(f * 1000) * 0.001;
+				return new RationalNode(context.clampReal(f));
 			}
 		},
 		FRACTION {
 			@Override
 			public IEvaluable create(Random random, BasicExpressionProvider context) {
-				final int MAX_N = 200, MAX_D = 100;
-				int n = random.nextInt(MAX_N) + 1, d = random.nextInt(MAX_D) + 1;
+				final int MAX_D = 10;
+				int d = random.nextInt(MAX_D) + 1;
+				d = context.clampFractionDenominator(d);
+				int n = random.nextInt(d * 2) + 1;
 				return new FractionNode(n, d);
 			}
 		};
 		
 		public abstract IEvaluable create(Random random, BasicExpressionProvider context);
 	}
+	
+	protected double JITTER = Double.MIN_NORMAL;
 	
 	private int numbersMin = 3, numbersMax = 3;
 	private float difficulty = 0.1f, difficulty3 = difficulty * difficulty * difficulty;
@@ -128,17 +132,25 @@ public abstract class BasicExpressionProvider implements IGeneratorProvider {
 			left = emitNode(quotaL, random);
 			right = emitNode(quotaR, random);
 			if(quotaL >= 2)
-				left = createBracketNode((OperationNode)left, operation);
+				left = createBracketLeftNode((OperationNode)left, operation);
 			if(quotaR >= 2)
-				right = createBracketNode((OperationNode)right, operation);
+				right = createBracketRightNode((OperationNode)right, operation);
 		}
 		operationNode.setLeft(left);
 		operationNode.setRight(right);
 		return operationNode;
 	}
 	
-	protected IEvaluable createBracketNode(OperationNode wrappedNode, Operation parentOperation) {
+	protected IEvaluable createBracketLeftNode(OperationNode wrappedNode, Operation parentOperation) {
 		if(wrappedNode.getOperation().comparePriority(parentOperation) < 0)
+			return new BracketNode(wrappedNode);
+		return wrappedNode;
+	}
+	
+	protected IEvaluable createBracketRightNode(OperationNode wrappedNode, Operation parentOperation) {
+		if(wrappedNode.getOperation().comparePriority(parentOperation) < 0
+				|| (wrappedNode.getOperation() == Operation.SUB && parentOperation == Operation.SUB)
+				|| (wrappedNode.getOperation() == Operation.DIV && parentOperation == Operation.DIV))
 			return new BracketNode(wrappedNode);
 		return wrappedNode;
 	}
@@ -150,4 +162,8 @@ public abstract class BasicExpressionProvider implements IGeneratorProvider {
 	protected IEvaluable createValueNode(Random random) {
 		return valuePool.next(random).create(random, this);
 	}
+	
+	protected abstract double clampReal(double d);
+	
+	protected abstract int clampFractionDenominator(int d);
 }

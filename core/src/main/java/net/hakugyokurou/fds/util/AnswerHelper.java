@@ -38,10 +38,8 @@ public final class AnswerHelper {
 			return true;
 		double delta = Math.abs(correctAnswer - answer);
 		if(iCabs < 1L)
-			return delta < 0.0001;
-		if(iCabs < 10L)
 			return delta < 0.001;
-		if(iCabs < 100L)
+		if(iCabs < 10L)
 			return delta < 0.01;
 		return delta < 0.1;
 	}
