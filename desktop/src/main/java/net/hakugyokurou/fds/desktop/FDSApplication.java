@@ -8,11 +8,23 @@ import javax.swing.JTable;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+
+import net.hakugyokurou.fds.MathExpression;
+import net.hakugyokurou.fds.node.InvalidExpressionException;
+import net.hakugyokurou.fds.parser.MathExpressionParser;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.swing.JTextField;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
@@ -134,4 +146,18 @@ public class FDSApplication {
 		panel.add(lblNewLabel_2, gbc_lblNewLabel_2);
 	}
 
+	public static ArrayList<MathExpression> loadFromFile(File file) throws InvalidExpressionException, IOException {
+		if(!file.isFile() || !file.exists())
+			throw new RuntimeException();
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			return MathExpressionParser.parse(reader);
+		} finally {
+			if(reader != null)
+				try {reader.close();} catch (IOException e) {}
+		}
+	}
+	
+	
 }

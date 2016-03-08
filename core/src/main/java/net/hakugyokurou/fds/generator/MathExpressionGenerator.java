@@ -1,5 +1,6 @@
 package net.hakugyokurou.fds.generator;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.hakugyokurou.fds.MathExpression;
@@ -27,6 +28,13 @@ public class MathExpressionGenerator {
 		return provider.generate(0, 1, random);
 	}
 	
+	public ArrayList<MathExpression> generate(int n) {
+		ArrayList<MathExpression> list = new ArrayList<MathExpression>(n);
+		for(int i = 0; i < n; i++)
+			list.add(provider.generate(i, n, random));
+		return list;
+	}
+	
 	public static MathExpression generateEasy() {
 		return EASY_INSTANCE.generate();
 	}
@@ -41,5 +49,21 @@ public class MathExpressionGenerator {
 	
 	public static MathExpression generateLunatic() {
 		return LUNATIC_INSTANCE.generate();
+	}
+	
+	public static ArrayList<MathExpression> generateEasy(int n) {
+		return EASY_INSTANCE.generate(n);
+	}
+	
+	public static ArrayList<MathExpression> generateNormal(int n) {
+		return NORMAL_INSTANCE.generate(n);
+	}
+	
+	public static ArrayList<MathExpression> generateHard(int n) {
+		return HARD_INSTANCE.generate(n);
+	}
+	
+	public static ArrayList<MathExpression> generateLunatic(int n) {
+		return LUNATIC_INSTANCE.generate(n);
 	}
 }

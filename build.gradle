@@ -69,10 +69,21 @@ project(":desktop") {
 
 project(":web") {
     apply plugin: "java"
+	apply plugin: 'eclipse-wtp'
+	apply plugin: 'war'
+	
+	sourceSets {
+		main {
+			java {
+				srcDir "src/main/webapp"
+			}
+		}
+	}
 	
 	dependencies {
 		compile project(":core")
 		compile "com.jfinal:jfinal:2.2"
+		compile "javax:javaee-api:7.0"
 		testCompile "junit:junit:4.8.2"
 	}
 }
