@@ -13,6 +13,7 @@ import net.hakugyokurou.fds.MathExpression;
 import net.hakugyokurou.fds.node.InvalidExpressionException;
 import net.hakugyokurou.fds.parser.MathExpressionParser;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
@@ -45,6 +46,13 @@ public class FDSApplication {
 	private JTextField textField_1;
 	private JTable table;
 	private JLabel lblResult;
+	
+	private ActionListener checkResult = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			lblResult.setText("HAHA");
+		}
+	};
 
 	/**
 	 * Launch the application.
@@ -115,6 +123,7 @@ public class FDSApplication {
 		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
 		textField_1 = new JTextField();
+		textField_1.addActionListener(checkResult);
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 0, 5);
 		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
@@ -124,6 +133,7 @@ public class FDSApplication {
 		textField_1.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Check");
+		btnNewButton.addActionListener(checkResult);
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(5, 15, 5, 5);
 		gbc_btnNewButton.gridx = 0;
@@ -154,6 +164,7 @@ public class FDSApplication {
 				if(generator.ok)
 				{
 					ArrayList<MathExpression> expressions = generator.expressions;
+					fillExpressions(expressions);
 				}
 				generator.dispose();
 			}
@@ -191,5 +202,26 @@ public class FDSApplication {
 		}
 	}
 	
-	
+	@SuppressWarnings("serial")
+	public void fillExpressions(ArrayList<MathExpression> expressions) {
+		Object[][] objs = new Object[expressions.size()][2];
+		for(int i = 0, size = expressions.size(); i < size; i++)
+		{
+			objs[i] = new Object[] {expressions.get(i), null};
+		}
+		table.setModel(new DefaultTableModel(
+			objs,
+			new String[] {
+				"Question", "Answer"
+			}
+		){
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.getColumnModel().getColumn(0).setPreferredWidth(300);
+	}
 }
