@@ -38,6 +38,19 @@ project(":core") {
 			}
 		}
 	}
+	
+	ext {
+		jjtPackage = 'src/main/javacc/net/hakugyokurou/fds/parser'
+	}
+
+	compileJavacc {
+		inputDirectory = file(jjtPackage)
+		outputDirectory = file(jjtPackage)
+	}
+
+	compileJavacc.doLast {
+		delete file(jjtPackage + '/tmp')
+	}
 
 	eclipseClasspath.dependsOn("compileJavacc")
 }
