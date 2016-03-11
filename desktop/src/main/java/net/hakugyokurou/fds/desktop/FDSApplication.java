@@ -1,6 +1,7 @@
 package net.hakugyokurou.fds.desktop;
 
 import java.awt.EventQueue;
+import java.awt.FileDialog;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -12,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import net.hakugyokurou.fds.MathExpression;
 import net.hakugyokurou.fds.node.InvalidExpressionException;
 import net.hakugyokurou.fds.parser.MathExpressionParser;
+import net.hakugyokurou.fds.util.AnswerHelper;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -25,16 +27,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import java.awt.FlowLayout;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -46,11 +51,31 @@ public class FDSApplication {
 	private JTextField textField_1;
 	private JTable table;
 	private JLabel lblResult;
+	private MathExpression currentExpression;
 	
 	private ActionListener checkResult = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			lblResult.setText("HAHA");
+			if(currentExpression == null)
+				return;
+			try {
+				double answer = AnswerHelper.parseSingleNumber(textField_1.getText());
+				boolean correct = AnswerHelper.checkAnswer(answer, currentExpression.eval());
+				if(correct)
+				{
+					int index = table.getSelectedRow();
+					table.setValueAt(textField_1.getText(), index, 1);
+					if(index < table.getRowCount() - 1)
+						table.changeSelection(index + 1, 0, false, false);
+					lblResult.setText("niccccce");
+				}
+				else
+				{
+					lblResult.setText("Wrong");
+				}
+			} catch (Exception e2) {
+				lblResult.setText(e2.getMessage());
+			}
 		}
 	};
 
@@ -153,6 +178,36 @@ public class FDSApplication {
 		panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		JButton btnLoad = new JButton("Load");
+		btnLoad.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FileDialog fd = new FileDialog(frame, "Load from file", FileDialog.LOAD);
+				fd.setMultipleMode(false);
+				fd.setFilenameFilter(new FilenameFilter() {
+					@Override
+					public boolean accept(File dir, String name) {
+						if(name.toLowerCase().endsWith(".txt"))
+							return true;
+						return false;
+					}
+				});
+				fd.setVisible(true);
+				String fileName = fd.getFile();
+				if(fileName != null)
+				{
+					try {
+						File file = new File(fileName);
+						if(file.isFile() && file.exists())
+						{
+							fillExpressions(loadFromFile(file));
+						}
+					} catch (Exception e2) {
+						lblResult.setText("");
+					}
+					
+				}
+			}
+		});
 		panel_1.add(btnLoad);
 		
 		JButton btnGenerate = new JButton("Generate");
@@ -186,6 +241,20 @@ public class FDSApplication {
 			}
 		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(300);
+		ListSelectionModel lsm = table.getSelectionModel();
+		lsm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		lsm.addListSelectionListener(new ListSelectionListener() {		
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				int index = table.getSelectedRow();
+				if(index < 0)
+					return;
+				currentExpression = (MathExpression)table.getValueAt(table.getSelectedRow(), 0);
+				textField.setText(currentExpression.toString());
+				textField_1.setText("");
+				lblResult.setText("");
+			}
+		});
 		scrollPane.setViewportView(table);
 	}
 
@@ -203,7 +272,7 @@ public class FDSApplication {
 	}
 	
 	@SuppressWarnings("serial")
-	public void fillExpressions(ArrayList<MathExpression> expressions) {
+	private void fillExpressions(ArrayList<MathExpression> expressions) {
 		Object[][] objs = new Object[expressions.size()][2];
 		for(int i = 0, size = expressions.size(); i < size; i++)
 		{
@@ -224,4 +293,5 @@ public class FDSApplication {
 		});
 		table.getColumnModel().getColumn(0).setPreferredWidth(300);
 	}
+
 }

@@ -111,7 +111,8 @@ public abstract class BasicExpressionProvider implements IGeneratorProvider {
 	@Override
 	public MathExpression generate(int n, int max, Random random) {
 		int numbers = numbersMin + random.nextInt(numbersMax - numbersMin);
-		return new MathExpression(emitNode(numbers, random));
+		IEvaluable root = emitNode(numbers, random);
+		return new MathExpression(root);
 	}
 	
 	protected IEvaluable emitNode(int quota, Random random) {
@@ -127,14 +128,14 @@ public abstract class BasicExpressionProvider implements IGeneratorProvider {
 		default:
 			operationNode = createOperationNode(random);
 			Operation operation = operationNode.getOperation();
-			int quotaL = quota / 2;
-			int quotaR = quota - quotaL;
+			int quotaL = quota - 1;
+			int quotaR = 1;
 			left = emitNode(quotaL, random);
 			right = emitNode(quotaR, random);
 			if(quotaL >= 2)
 				left = createBracketLeftNode((OperationNode)left, operation);
-			if(quotaR >= 2)
-				right = createBracketRightNode((OperationNode)right, operation);
+			/*if(quotaR >= 2)
+				right = createBracketRightNode((OperationNode)right, operation);*/
 		}
 		operationNode.setLeft(left);
 		operationNode.setRight(right);

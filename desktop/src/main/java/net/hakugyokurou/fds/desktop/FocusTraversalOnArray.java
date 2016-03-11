@@ -8,7 +8,7 @@
  * Contributors:
  *    Google, Inc. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wb.swing;
+package net.hakugyokurou.fds.desktop;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -21,7 +21,7 @@ import java.awt.FocusTraversalPolicy;
  * 
  * @author scheglov_ke
  */
-public class FocusTraversalOnArray extends FocusTraversalPolicy {
+class FocusTraversalOnArray extends FocusTraversalPolicy {
 	private final Component m_Components[];
 	////////////////////////////////////////////////////////////////////////////
 	//
