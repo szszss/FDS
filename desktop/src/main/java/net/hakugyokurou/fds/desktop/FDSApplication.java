@@ -1,10 +1,7 @@
 package net.hakugyokurou.fds.desktop;
 
 import java.awt.EventQueue;
-import java.awt.FileDialog;
-
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JTable;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -15,8 +12,8 @@ import net.hakugyokurou.fds.node.InvalidExpressionException;
 import net.hakugyokurou.fds.parser.MathExpressionParser;
 import net.hakugyokurou.fds.util.AnswerHelper;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -25,28 +22,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.JMenuItem;
-import javax.swing.JMenu;
 import java.awt.FlowLayout;
 import java.awt.Component;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JScrollPane;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class FDSApplication {
 
-	private JFrame frame;
+	private JFrame frmFiniteDigitSummator;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTable table;
@@ -67,7 +60,7 @@ public class FDSApplication {
 					table.setValueAt(textField_1.getText(), index, 1);
 					if(index < table.getRowCount() - 1)
 						table.changeSelection(index + 1, 0, false, false);
-					lblResult.setText("niccccce");
+					lblResult.setText("Correct");
 				}
 				else
 				{
@@ -84,10 +77,14 @@ public class FDSApplication {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
+					try {
+						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					} catch (Exception e) {}
 					FDSApplication window = new FDSApplication();
-					window.frame.setVisible(true);
+					window.frmFiniteDigitSummator.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -106,12 +103,13 @@ public class FDSApplication {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 500, 700);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmFiniteDigitSummator = new JFrame();
+		frmFiniteDigitSummator.setTitle("Finite Digit Summator");
+		frmFiniteDigitSummator.setBounds(100, 100, 500, 700);
+		frmFiniteDigitSummator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.SOUTH);
+		frmFiniteDigitSummator.getContentPane().add(panel, BorderLayout.SOUTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] {0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0, 0};
@@ -174,37 +172,29 @@ public class FDSApplication {
 		panel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{btnNewButton, lblNewLabel, textField, lblNewLabel_1, textField_1, lblResult}));
 		
 		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(panel_1, BorderLayout.NORTH);
+		frmFiniteDigitSummator.getContentPane().add(panel_1, BorderLayout.NORTH);
 		panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		JButton btnLoad = new JButton("Load");
 		btnLoad.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FileDialog fd = new FileDialog(frame, "Load from file", FileDialog.LOAD);
-				fd.setMultipleMode(false);
-				fd.setFilenameFilter(new FilenameFilter() {
-					@Override
-					public boolean accept(File dir, String name) {
-						if(name.toLowerCase().endsWith(".txt"))
-							return true;
-						return false;
-					}
-				});
-				fd.setVisible(true);
-				String fileName = fd.getFile();
-				if(fileName != null)
-				{
+				JFileChooser chooser = new JFileChooser();
+				chooser.setMultiSelectionEnabled(false);
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Text", "txt");
+				chooser.setFileFilter(filter);
+				int returnVal = chooser.showOpenDialog(frmFiniteDigitSummator);
+				if(returnVal == JFileChooser.APPROVE_OPTION) {
 					try {
-						File file = new File(fileName);
+						File file = chooser.getSelectedFile();
 						if(file.isFile() && file.exists())
 						{
+							clear();
 							fillExpressions(loadFromFile(file));
 						}
 					} catch (Exception e2) {
-						lblResult.setText("");
+						lblResult.setText(e2.getMessage());
 					}
-					
 				}
 			}
 		});
@@ -212,6 +202,7 @@ public class FDSApplication {
 		
 		JButton btnGenerate = new JButton("Generate");
 		btnGenerate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Generator generator = new Generator();
 				generator.setModal(true);
@@ -219,6 +210,7 @@ public class FDSApplication {
 				if(generator.ok)
 				{
 					ArrayList<MathExpression> expressions = generator.expressions;
+					clear();
 					fillExpressions(expressions);
 				}
 				generator.dispose();
@@ -227,10 +219,23 @@ public class FDSApplication {
 		panel_1.add(btnGenerate);
 		
 		JButton btnParse = new JButton("Parse");
+		btnParse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Parser parser = new Parser();
+				parser.setVisible(true);
+				if(parser.ok)
+				{
+					ArrayList<MathExpression> expressions = parser.expressions;
+					clear();
+					fillExpressions(expressions);
+				}
+				parser.dispose();
+			}
+		});
 		panel_1.add(btnParse);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		frmFiniteDigitSummator.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
@@ -287,6 +292,7 @@ public class FDSApplication {
 			boolean[] columnEditables = new boolean[] {
 				false, false
 			};
+			@Override
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
@@ -294,4 +300,18 @@ public class FDSApplication {
 		table.getColumnModel().getColumn(0).setPreferredWidth(300);
 	}
 
+	private void clear() {
+		table.clearSelection();
+		currentExpression = null;
+		textField.setText("");
+		textField_1.setText("");
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Question", "Answer"
+			}
+		));
+	table.getColumnModel().getColumn(0).setPreferredWidth(300);
+	}
 }

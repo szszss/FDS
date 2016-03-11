@@ -12,7 +12,6 @@ import javax.swing.border.EmptyBorder;
 import net.hakugyokurou.fds.MathExpression;
 import net.hakugyokurou.fds.generator.MathExpressionGenerator;
 
-import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
@@ -22,9 +21,8 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import java.awt.Dialog.ModalExclusionType;
-import java.awt.Dialog.ModalityType;
 
+@SuppressWarnings("serial")
 class Generator extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -39,6 +37,7 @@ class Generator extends JDialog {
 	private JButton okButton;
 
 	public Generator() {
+		setResizable(false);
 		setModal(true);
 		setModalityType(ModalityType.TOOLKIT_MODAL);
 		setTitle("Expression Generator");
@@ -85,6 +84,7 @@ class Generator extends JDialog {
 			{
 				JButton btnGege = new JButton("Generate");
 				btnGege.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						if(rdbtnEasy.isSelected()) {
 							expressions = MathExpressionGenerator.generateEasy(((Number)spinner.getValue()).intValue());
@@ -124,6 +124,7 @@ class Generator extends JDialog {
 				okButton = new JButton("OK");
 				okButton.setEnabled(false);
 				okButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						ok = true;
 						setVisible(false);
@@ -136,6 +137,7 @@ class Generator extends JDialog {
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
 					}
