@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
 import net.hakugyokurou.fds.MathExpression;
-import net.hakugyokurou.fds.node.InvalidExpressionException;
 import net.hakugyokurou.fds.parser.MathExpressionParser;
 import net.hakugyokurou.fds.util.AnswerHelper;
 
@@ -20,10 +19,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
@@ -190,7 +186,7 @@ public class FDSApplication {
 						if(file.isFile() && file.exists())
 						{
 							clear();
-							fillExpressions(loadFromFile(file));
+							fillExpressions(MathExpressionParser.parseFile(file));
 						}
 					} catch (Exception e2) {
 						lblResult.setText(e2.getMessage());
@@ -220,6 +216,7 @@ public class FDSApplication {
 		
 		JButton btnParse = new JButton("Parse");
 		btnParse.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Parser parser = new Parser();
 				parser.setVisible(true);
@@ -261,19 +258,6 @@ public class FDSApplication {
 			}
 		});
 		scrollPane.setViewportView(table);
-	}
-
-	public static ArrayList<MathExpression> loadFromFile(File file) throws InvalidExpressionException, IOException {
-		if(!file.isFile() || !file.exists())
-			throw new RuntimeException();
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			return MathExpressionParser.parse(reader);
-		} finally {
-			if(reader != null)
-				try {reader.close();} catch (IOException e) {}
-		}
 	}
 	
 	@SuppressWarnings("serial")

@@ -17,13 +17,11 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import java.awt.Dialog.ModalityType;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.io.StringReader;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 class Parser extends JDialog {
@@ -37,6 +35,7 @@ class Parser extends JDialog {
 	private JButton okButton;
 	
 	private ActionListener parseAction = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
 				MathExpression mathExpression = MathExpressionParser.parseLine(new StringReader(textField.getText()));
@@ -114,6 +113,7 @@ class Parser extends JDialog {
 			{
 				okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						ok = true;
 						setVisible(false);
@@ -127,6 +127,7 @@ class Parser extends JDialog {
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);
 					}

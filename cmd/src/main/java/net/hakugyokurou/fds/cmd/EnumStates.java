@@ -4,8 +4,10 @@ import static net.hakugyokurou.fds.cmd.InteractiveCmd.CAPGROUP_COMMAND;
 import static net.hakugyokurou.fds.cmd.InteractiveCmd.CAPGROUP_EXPRESSION;
 import static net.hakugyokurou.fds.cmd.InteractiveCmd.CAPGROUP_SEGMENT;
 
+import java.io.File;
 import java.io.PrintStream;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 import net.hakugyokurou.fds.MathExpression;
@@ -23,7 +25,7 @@ enum EnumStates {
 				out.println("Commands:");
 				out.println("help : Print all available commands.");
 				out.println("parse <expr> : Read and parse an expression and store it as question.");
-				out.println("fromfile <filepath> : Read and parse expressions from a file and store them as questions.");
+				out.println("fromfile \"<filepath>\" : Read and parse expressions from a file and store them as questions.");
 				out.println("answer : Answer questions.");
 				out.println("list : Print all stored questions.");
 				out.println("clear : Remove all stored questions.");
@@ -47,6 +49,26 @@ enum EnumStates {
 				out.println(expr);
 				return ANSWER;
 			}
+			if(cmd.equals("fromfile"))
+			{
+				return READFILE;
+			}
+			if(cmd.equals("list"))
+			{
+				for(MathExpression expression : context.expressions)
+				{
+					out.println(expression);
+				}
+				return STANDBY;
+			}
+			if(cmd.equals("clear"))
+			{
+				context.expressions.clear();
+				context.currentQuestionId = context.statsAccepted = context.statsSkipped = 0;
+				context.maxQuestionId = 0;
+				out.println("All questions purged.");
+				return STANDBY;
+			}
 			if(cmd.equals("exit") || cmd.equals("quit"))
 			{
 				return EXIT;
@@ -64,6 +86,32 @@ enum EnumStates {
 			out.println("Expression has been stored as Question " + context.maxQuestionId);
 			return STANDBY;
 		}
+	},
+	READFILE {
+		@Override
+		public EnumStates transfer(InteractiveCmd context) {
+			String str = context.matcher.group(CAPGROUP_SEGMENT);
+			if(str != null)
+			{
+				str = str.substring(1, str.length()-1);
+				File file = new File(str);
+				try {
+					ArrayList<MathExpression> expressions = MathExpressionParser.parseFile(file);
+					context.expressions = expressions;
+					context.currentQuestionId = context.statsAccepted = context.statsSkipped = 0;
+					context.maxQuestionId = expressions.size();
+					PrintStream out = context.outputStream;
+					for(MathExpression expr : expressions)
+						out.println(expr);
+					out.println(expressions.size() + " expression(s) loaded.");
+				} catch (Exception e) {
+					context.outputStream.println("Can't parse:" + str + " Exception:" + e.getMessage());
+				}
+				return STANDBY;
+			}
+			context.outputStream.println("Wrong input, not a segment:" + context.matcher.group(0));
+			return STANDBY;
+		}	
 	},
 	ANSWER {
 		@Override //TODO:233333
