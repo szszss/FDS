@@ -1,11 +1,13 @@
 buildscript {
     repositories {
         jcenter()
+		maven{url 'http://maven.oschina.net/content/groups/public/'}
     }
 	
     dependencies {
 		classpath 'ca.coglinc:javacc-gradle-plugin:2.3.1'
 		classpath 'com.android.tools.build:gradle:1.5.0'
+		classpath 'org.akhikhl.gretty:gretty:1.2.4'
     }
 }
 
@@ -19,7 +21,8 @@ allprojects {
     }
 
     repositories {
-        jcenter()
+		jcenter()
+		maven{url 'http://maven.oschina.net/content/groups/public/'}
     }
 }
 
@@ -83,8 +86,14 @@ project(":desktop") {
 
 project(":web") {
     apply plugin: "java"
-	apply plugin: 'eclipse-wtp'
-	apply plugin: 'war'
+	apply plugin: "eclipse-wtp"
+	apply plugin: "war"
+	apply plugin: "org.akhikhl.gretty"
+	
+	dependencies {
+		compile project(":core")
+		compile "com.jfinal:jfinal:2.2"
+	}
 	
 	sourceSets {
 		main {
@@ -92,13 +101,6 @@ project(":web") {
 				srcDir "src/main/webapp"
 			}
 		}
-	}
-	
-	dependencies {
-		compile project(":core")
-		compile "com.jfinal:jfinal:2.2"
-		compile "javax:javaee-api:7.0"
-		testCompile "junit:junit:4.8.2"
 	}
 }
 

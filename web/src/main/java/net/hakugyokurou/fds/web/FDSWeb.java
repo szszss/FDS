@@ -6,12 +6,15 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.render.ViewType;
 
 public class FDSWeb extends JFinalConfig {
 
 	@Override
 	public void configConstant(Constants me) {
 		me.setDevMode(true);
+		me.setViewType(ViewType.JSP);
+	    me.setEncoding("UTF-8");
 	}
 
 	@Override
@@ -29,6 +32,9 @@ public class FDSWeb extends JFinalConfig {
 	@Override
 	public void configRoute(Routes me) {
 		me.add("/", IndexController.class);
-		me.add("/easy", EasyController.class);
+		me.add("/easy", BasicController.EasyController.class);
+		me.add("/normal", BasicController.NormalController.class);
+		me.add("/hard", BasicController.HardController.class);
+		me.add("/lunatic", BasicController.LunaticController.class);
 	}
 }
