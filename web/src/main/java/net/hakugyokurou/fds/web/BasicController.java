@@ -35,11 +35,14 @@ public abstract class BasicController extends Controller {
 		{
 			sb.append("answer[" + i + "] = " + exprs.get(i).eval() + ";\r\n");
 		}
-		sb.append("function checkAnswer(tfId, trId) {\r\n")
+		sb.append("function checkAnswer(tfId, trId, anId) {\r\n")
 		.append("document.getElementById(trId).className=\"danger\";\r\n")
 		.append("var v = document.getElementById(tfId).value;\r\n")
 		.append("if(v.indexOf(\"/\") >= 0) { \r\n")
-		.append("}")
+		.append("} else { \r\n")
+		.append("var n = parseFloat(v);\r\n")
+		.append("if(abs(n - answer[anId]) < 0.1) { document.getElementById(trId).className=\"success\"; }")
+		.append("} \r\n")
 		.append("}")
 		.append("</script>");
 		return sb.toString();
@@ -59,7 +62,7 @@ public abstract class BasicController extends Controller {
 			.append("<td>\r\n")
 				.append("<div class=\"input-group\">\r\n")
 					.append("<input type=\"text\" class=\"form-control\" id=\"_tf" 
-							+ String.valueOf(i) + "\" onchange=\"checkAnswer(this.id, '" + "_tr" + String.valueOf(i)  + "');\" />\r\n")
+							+ String.valueOf(i) + "\" onchange=\"checkAnswer(this.id, '" + "_tr" + String.valueOf(i)  + "', " + i + ");\" />\r\n")
 					/*.append("<span class=\"input-group-btn\">")
 						.append("<button class=\"btn btn-default\" type=\"button\">Button</button>")
 					.append("</span>")*/
