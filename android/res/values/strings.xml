@@ -8,5 +8,13 @@
     <string name="btn_gen">Generate just-in-time</string>
     <string name="btn_parse">Parse from input</string>
     <string name="action_settings">Settings</string>
+    <string name="lb_Diff">Difficult</string>
+    <string name="rb_Easy">Easy</string>
+    <string name="rb_Normal">Normal</string>
+    <string name="rb_Hard">Hard</string>
+    <string name="rb_Lunatic">Lunatic</string>
+    <string name="lb_Count">Count</string>
+    <string name="btn_Gen">Generate</string>
+    <string name="btn_Check">Check</string>
 
 </resources>

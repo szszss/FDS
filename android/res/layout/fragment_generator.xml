@@ -1,0 +1,85 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context="net.hakugyokurou.fds.android.GeneratorFragment" >
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="2" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="100dp"
+            android:layout_column="0"
+            android:layout_gravity="start|top"
+            android:layout_row="0"
+            android:text="@string/lb_Diff"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_column="1"
+            android:layout_gravity="fill_horizontal|top"
+            android:layout_row="0" >
+
+            <RadioButton
+                android:id="@+id/rbEasy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rb_Easy" />
+
+            <RadioButton
+                android:id="@+id/rbNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/rb_Normal" />
+
+            <RadioButton
+                android:id="@+id/rbHard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rb_Hard" />
+
+            <RadioButton
+                android:id="@+id/rbLunatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rb_Lunatic" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_column="0"
+            android:layout_gravity="start|center_vertical"
+            android:layout_row="0"
+            android:text="@string/lb_Count"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/buttonGenerate"
+            android:layout_column="1"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_row="0"
+            android:text="@string/btn_Gen" />
+
+        <EditText
+            android:id="@+id/editAnswer"
+            android:layout_column="1"
+            android:layout_gravity="center"
+            android:layout_row="0"
+            android:ems="10"
+            android:inputType="number" >
+
+            <requestFocus />
+        </EditText>
+
+    </GridLayout>
+
+</FrameLayout>
