@@ -7,7 +7,7 @@ buildscript {
     dependencies {
 		classpath 'ca.coglinc:javacc-gradle-plugin:2.3.1'
 		classpath 'com.android.tools.build:gradle:1.5.0'
-		classpath 'org.akhikhl.gretty:gretty:1.2.4'
+		//classpath 'org.akhikhl.gretty:gretty:1.2.4'
     }
 }
 
@@ -88,7 +88,7 @@ project(":web") {
     apply plugin: "java"
 	apply plugin: "eclipse-wtp"
 	apply plugin: "war"
-	apply plugin: "org.akhikhl.gretty"
+	//apply plugin: "org.akhikhl.gretty"
 	
 	dependencies {
 		compile project(":core")

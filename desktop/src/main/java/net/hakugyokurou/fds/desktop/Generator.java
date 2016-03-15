@@ -41,7 +41,7 @@ class Generator extends JDialog {
 		setModal(true);
 		setModalityType(ModalityType.TOOLKIT_MODAL);
 		setTitle("Expression Generator");
-		setBounds(100, 100, 500, 550);
+		setBounds(100, 100, 600, 550);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

@@ -38,10 +38,10 @@ public abstract class BasicController extends Controller {
 		sb.append("function checkAnswer(tfId, trId, anId) {\r\n")
 		.append("document.getElementById(trId).className=\"danger\";\r\n")
 		.append("var v = document.getElementById(tfId).value;\r\n")
-		.append("if(v.indexOf(\"/\") >= 0) { \r\n")
-		.append("} else { \r\n")
+		.append("if(v.indexOf(\"/\") >= 0) { var arr = v.split(\"/\",2);var n = parseFloat(arr[0]); var d = parseFloat(arr[1]);\r\n")
+		.append("if(Math.abs(n / d - answer[anId]) < 0.1) { document.getElementById(trId).className=\"success\"; } } else { \r\n")
 		.append("var n = parseFloat(v);\r\n")
-		.append("if(abs(n - answer[anId]) < 0.1) { document.getElementById(trId).className=\"success\"; }")
+		.append("if(Math.abs(n - answer[anId]) < 0.1) { document.getElementById(trId).className=\"success\"; }")
 		.append("} \r\n")
 		.append("}")
 		.append("</script>");
