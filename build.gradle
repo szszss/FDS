@@ -6,8 +6,8 @@ buildscript {
 	
     dependencies {
 		classpath 'ca.coglinc:javacc-gradle-plugin:2.3.1'
-		classpath 'com.android.tools.build:gradle:1.5.0'
-		//classpath 'org.akhikhl.gretty:gretty:1.2.4'
+		//classpath 'com.android.tools.build:gradle:1.5.0'
+		classpath 'org.akhikhl.gretty:gretty:1.2.4'
     }
 }
 
@@ -104,13 +104,14 @@ project(":web") {
 	}
 }
 
-project(":android") {
+/*project(":android") {
     apply plugin: "android"
 	
 	dependencies {
+		compile files("libs/android-support-v4.jar")
 		compile project(":core")
 	}
-}
+}*/
 
 tasks.eclipse.doLast {
     delete ".project"
