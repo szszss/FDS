@@ -102,6 +102,8 @@ project(":web") {
 			}
 		}
 	}
+	
+	war.archiveName = "root.war"
 }
 
 /*project(":android") {
