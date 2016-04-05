@@ -45,6 +45,11 @@ project(":core") {
 	ext {
 		jjtPackage = 'src/main/javacc/net/hakugyokurou/fds/parser'
 	}
+	
+	compileJjtree {
+		inputDirectory = file(jjtPackage)
+		outputDirectory = file(jjtPackage)
+	}
 
 	compileJavacc {
 		inputDirectory = file(jjtPackage)
@@ -55,7 +60,7 @@ project(":core") {
 		delete file(jjtPackage + '/tmp')
 	}
 
-	eclipseClasspath.dependsOn("compileJavacc")
+	eclipseClasspath.dependsOn("compileJjtree", "compileJavacc")
 }
 
 project(":cmd") {
@@ -66,6 +71,8 @@ project(":cmd") {
 		compile "commons-cli:commons-cli:1.3.1"
 		testCompile "junit:junit:4.8.2"
 	}
+	
+	jar.manifest.attributes "Main-Class": "net.hakugyokurou.fds.cmd.FDSCmd"
 	
 	task copyWrappers(type: Copy) {
 		from 'src/wrapper'
@@ -82,6 +89,8 @@ project(":desktop") {
 		compile project(":core")
 		testCompile "junit:junit:4.8.2"
 	}
+	
+	jar.manifest.attributes "Main-Class": "net.hakugyokurou.fds.desktop.FDSApplication"
 }
 
 project(":web") {
@@ -102,6 +111,8 @@ project(":web") {
 			}
 		}
 	}
+	
+	war.archiveName = "root.war"
 }
 
 /*project(":android") {
