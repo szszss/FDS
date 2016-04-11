@@ -56,7 +56,7 @@ public class AnswerFragment extends Fragment {
 				HashMap<String, Object> item = new HashMap<String, Object>();
 				item.put("Ojbect", expr);
 				item.put("ListItemQuestion", expr.toString());
-				item.put("ListItemAnswer", "");
+				item.put("ListItemAnswer", "NONONO");
 				items.add(item);
 			}
 		}
@@ -98,7 +98,7 @@ public class AnswerFragment extends Fragment {
 						currentItem.put("ListItemAnswer", answer);
 					else
 						currentItem.put("ListItemAnswer", "Wrong");
-					listView.deferNotifyDataSetChanged();
+					((SimpleAdapter)listView.getAdapter()).notifyDataSetChanged();
 				}
 			});
 			buttonCheck.setEnabled(false);
