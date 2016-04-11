@@ -115,14 +115,14 @@ project(":web") {
 	war.archiveName = "root.war"
 }
 
-/*project(":android") {
+project(":android") {
     apply plugin: "android"
 	
 	dependencies {
 		compile files("libs/android-support-v4.jar")
 		compile project(":core")
 	}
-}*/
+}
 
 tasks.eclipse.doLast {
     delete ".project"
