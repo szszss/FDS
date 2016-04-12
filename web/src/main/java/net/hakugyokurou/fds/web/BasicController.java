@@ -15,6 +15,7 @@ public abstract class BasicController extends Controller {
 		ArrayList<MathExpression> exprs = createExpressions();
 		setAttr("js", printJs(exprs));
 		setAttr("questions", printTable(exprs));
+		setAttr("diff", getDiff());
 		renderJsp("/answer.jsp");
 		/*try {
 			ArrayList<MathExpression> exprs = createExpressions();
@@ -86,10 +87,17 @@ public abstract class BasicController extends Controller {
 	
 	public abstract ArrayList<MathExpression> createExpressions();
 	
+	protected abstract String getDiff();
+	
 	public static class EasyController extends BasicController {
 		@Override
 		public ArrayList<MathExpression> createExpressions() {
 			return MathExpressionGenerator.generateEasy(AMOUNT);
+		}
+
+		@Override
+		protected String getDiff() {
+			return "Easy";
 		}
 	}
 	
@@ -98,6 +106,11 @@ public abstract class BasicController extends Controller {
 		public ArrayList<MathExpression> createExpressions() {
 			return MathExpressionGenerator.generateNormal(AMOUNT);
 		}
+
+		@Override
+		protected String getDiff() {
+			return "Normal";
+		}
 	}
 	
 	public static class HardController extends BasicController {
@@ -105,12 +118,22 @@ public abstract class BasicController extends Controller {
 		public ArrayList<MathExpression> createExpressions() {
 			return MathExpressionGenerator.generateHard(AMOUNT);
 		}
+
+		@Override
+		protected String getDiff() {
+			return "Hard";
+		}
 	}
 	
 	public static class LunaticController extends BasicController {
 		@Override
 		public ArrayList<MathExpression> createExpressions() {
 			return MathExpressionGenerator.generateLunatic(AMOUNT);
+		}
+
+		@Override
+		protected String getDiff() {
+			return "Lunatic";
 		}
 	}
 }

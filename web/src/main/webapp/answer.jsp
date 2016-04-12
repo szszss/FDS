@@ -21,7 +21,7 @@
 			<div class="page-header" id="banner">
 				<div class="row">
 					<div class="col-lg-8 col-md-7 col-sm-6">
-						<h1>Question - Easy</h1>
+						<h1>Question - <%= request.getAttribute("diff").toString() %></h1>
 						<p class="lead">Solve this questions:</p>
 					</div>
 				</div>
